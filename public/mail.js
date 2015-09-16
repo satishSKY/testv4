@@ -15,8 +15,8 @@ class Mail {
 	static sendError(err) {
 		let transporter = nodemailer.createTransport();
 		transporter.sendMail({
-				from: 'satish@idealtechnologys.com',
-				to: 'satish@idealtechnologys.com',
+				from: 'aa@aa.com',
+				to: 'abcd@ggggg.com',
 				subject: 'Regarding to find error in node app.',
 				text: err
 			}, function (error, response) {
