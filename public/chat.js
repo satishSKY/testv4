@@ -50,7 +50,6 @@ class Chat {
 			rplData = { "success": 0, "msg": "Messages send successfully." },
 			db = Database.dbTable,
 			msgStore = that.objParams(data);
-
 		if (msgStore === false) {
 			return callBack({ "success": 0, "msg": appConst.invalidParameters });
 		}
@@ -67,7 +66,6 @@ class Chat {
 				} else {
 					rplData.success = 1;
 					console.log(data.chatToId + '  : I received a private message by ', data.chatFromId, ' saying ', data.chatMessage);
-					//socket.broadcast.to(ls.get(data.chatToId).socket_ids).volatile.emit('privateMessage', data);
 					data.msg = appConst.chatMsg;
 					that.socket.broadcast.to(key).volatile.emit('privateMessage', data);
 					return callBack(rplData);

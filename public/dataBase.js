@@ -11,6 +11,7 @@ var mongodb = require('mongodb'),
 	mysql = require('mysql');
 
 class Database {
+	
 	constructor() {
 		let that = this;
 		this.MsgDb = null;
@@ -18,19 +19,21 @@ class Database {
 			host: 'localhost',
 			user: 'root',
 			password: '',
-			database: 'test'
+			database: 'smex_new',
+			multipleStatements: true,
 		});
 		/*mongodb*/
 		mongodb.MongoClient.connect("mongodb://localhost:27017/node-v4", function (err, database) {
 			if (!err) {
-				database.createCollection("messages", {autoIndexId: true} );
+				database.createCollection("messages", { autoIndexId: true });
 				that.MsgDb = database.collection('messages');
 				console.log("mongodb Listening on port 27017");
 			} else {
-				console.log("Mongodb Error: ",err);
+				console.log("Mongodb Error: ", err);
 			}
 		});//initializeMongoDb			
 	}
+	
 	get dbTable() {
 		return this.MsgDb;
 	}//dbTable
@@ -46,8 +49,7 @@ class Database {
 			});
 		});
 	}//getConn
-	 
-	
+	 	
 }//Database class
 var appDB = new Database();
 module.exports = appDB; //Database;

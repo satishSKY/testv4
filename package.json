@@ -9,6 +9,7 @@
   "dependencies": {
     "async": "1.2.1",
     "express": "4.13.1",
+    "forever-monitor": "^1.6.0",
     "formidable": "1.0.17",
     "gulp": "^3.9.0",
     "moment": "2.10.3",
