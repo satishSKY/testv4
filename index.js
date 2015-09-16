@@ -15,7 +15,6 @@ const app = require('express')(),
 	io = require('socket.io')(server),
 	Filedownloads = require("./public/filedownloads"),
 	Mail = require("./public/mail"),
-	ls = new Map(),
 	util = require('util');
 
 /**
@@ -23,6 +22,7 @@ const app = require('express')(),
  */
 
 app.set('port', process.env.PORT || 3000);
+var ls = new Map(),
 process.addListener("uncaughtException", function (err) {
 	util.log("Uncaught exception: " + err);
 	Mail.sendError(err.stack);
