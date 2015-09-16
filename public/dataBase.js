@@ -19,7 +19,7 @@ class Database {
 			host: 'localhost',
 			user: 'root',
 			password: '',
-			database: '',
+			database: 'smex_new',
 			multipleStatements: true,
 		});
 		/*mongodb*/

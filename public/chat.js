@@ -8,21 +8,15 @@
  */
 var Database = require('./dataBase.js'),
 	moment = require('moment'),
+	io = require("../index").io,
+	ls = require("../index").ls,
 	appConst = require('./const.js');
 
 
 class Chat {
 	constructor(io, ls, socket) {
-		this._io = io;
-		this._ls = ls;
 		this.socket = socket;
-	}
-	set io(io) {
-		this._io = io;
-	}
-	set ls(ls) {
-		this._ls = ls;
-	}
+	}	
 	objParams(data) {
 		var msgStore = Object.create(null);
 		if (data.chatFromId === "" || data.hasOwnProperty("chatFromId") === false)
@@ -46,7 +40,6 @@ class Chat {
 	}//objParams
 	privateMessages(data, callBack) {
 		let that = this,
-			ls = this._ls,
 			rplData = { "success": 0, "msg": "Messages send successfully." },
 			db = Database.dbTable,
 			msgStore = that.objParams(data);
@@ -85,7 +78,7 @@ class Chat {
 		db.find({ "chatToId": String(receiverID), "chatMessageStatus": "0" }, { "chatMessageStatus": 0 }).toArray(function (err, docs) {
 			if (!err && docs.length > 0) {
 				docs.msg = appConst.chatMsg;
-				self._io.sockets.in(self.socket.id).emit('privateMessage', docs);
+				io.sockets.in(self.socket.id).emit('privateMessage', docs);
 				db.update({ "chatToId": String(receiverID) }, { $set: { "chatMessageStatus": "1" } }, { multi: true });
 			} else {
 				console.info("You don`t have any msg.");

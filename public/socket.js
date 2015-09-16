@@ -14,27 +14,11 @@ const Chat = require("./chat"),
 	Database = require("./dataBase");
 
 
-class Socket {
+class Socket extends Chat{
 	constructor(socket) {
+		super(socket);
 		this._socket = socket;
 		socket
-			.on("error", function (err) {
-				//var errorNotification = new Errornotification(err);
-				console.log("Caught flash policy server socket error: ");
-				console.log(err.stack);
-			})
-			.on('connect', function () {
-				console.log('connected');
-			})
-			.on('connecting', function () {
-				console.log('connecting');
-			})
-			.on('connect_failed', function () {
-				console.log('connect_failed');
-			})
-			.on('reconnect_failed', function () {
-				console.log('reconnect_failed');
-			})
 			.on('login', function (data, callBack) {
 				//params: userId, userName, type >> customer,superMrkt,dBoy
 				var authData = JSON.parse(data);
@@ -60,34 +44,51 @@ class Socket {
 				}
 			})//login
 			.on('userList', function (data, callBack) {//customer get supermarket list and their delivery boy list for chat.
-				let chat = new Chat(io, ls, socket);
+				let chat = new Chat(socket);
 				chat.getUserList(JSON.parse(data), callBack);
-			}) //superMarketList	
+			}) //userList	
 			.on('privateMessage', function (data, callBack) {
 				var jdata = JSON.parse(data);
-				let chat = new Chat(io, ls, socket);
+				let chat = new Chat(socket);
 				chat.privateMessages(jdata, callBack);
 			}) //privateMessage		
 			.on('chatHistory', function (jdata, callback) {
 				//params: pageId,chatToId,chatFromId
 				var data = JSON.parse(jdata);
-				let chat = new Chat(io, ls, socket);
+				let chat = new Chat(socket);
 				chat.chatHistory(data, callback);
-			}) //chatHistory\
+			}) //chatHistory
 			.on('writingStatus', function (Jdata) { // msg writing status
 				//params: chatToId,chatFromId,chatFromName,status>>0,1; 0 for writing off and 1 for writing... 
 				var data = JSON.parse(Jdata);
 				if (ls.get(data.chatToId))
 					io.to(data.chatToId).emit('typingStatus', data);
-			}) //writingOn
+			}) //writingStatus
+			.on("error", function (err) {
+				//var errorNotification = new Errornotification(err);
+				console.log("Caught flash policy server socket error: ");
+				console.log(err.stack);
+			})//error
+			.on('connect', function () {
+				console.log('connected');
+			})//connect
+			.on('connecting', function () {
+				console.log('connecting');
+			})//connecting
+			.on('connect_failed', function () {
+				console.log('connect_failed');
+			})//connect_failed
+			.on('reconnect_failed', function () {
+				console.log('reconnect_failed');
+			})//reconnect_failed
 			.on('disconnect', function () {
 				console.log("disconnect");
 			});//disconnect	
 	}//constructor
-	get socket() { 
+	get socket() {
 		return this._socket;
 	}
-	
+
 }//class
 
 module.exports = Socket;
