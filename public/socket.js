@@ -6,12 +6,14 @@
  * Company: Ideal IT Techno Pvt. Ltd.
  *  Date :01-July-2015
  */
-
+ 
+var ls = require("../index").ls;	
 const Chat = require("./chat"),
 	Mail = require("./mail"),
-	io = require("../index").io,
-	ls = require("../index").ls;
+	io = require("../index").io;
 	
+
+
 class Socket extends Chat{
 	constructor(socket) {
 		super(socket);
