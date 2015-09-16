@@ -14,23 +14,28 @@ const app = require('express')(),
 	server = require('http').Server(app),
 	io = require('socket.io')(server),
 	Filedownloads = require("./public/filedownloads"),
+	Mail = require("./public/mail"),
 	ls = new Map(),
 	util = require('util');
 
 /**
  * Configuration all environments
  */
+
 app.set('port', process.env.PORT || 3000);
 process.addListener("uncaughtException", function (err) {
 	util.log("Uncaught exception: " + err);
+	Mail.sendError(err.stack);
 	console.log(err.stack);
 	console.log(typeof (this));
 });
+
 server.on('error', function (e) {
 	if (e.code === 'EADDRINUSE') {
 		console.log('Failed to bind to port - address already in use ');
 		process.exit(1);
-	}
+	} 
+	Mail.sendError(e.stack);
 });
 
 /**

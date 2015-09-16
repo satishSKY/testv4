@@ -8,12 +8,10 @@
  */
 
 const Chat = require("./chat"),
-	Notification = require("./notification"),
+	Mail = require("./mail"),
 	io = require("../index").io,
-	ls = require("../index").ls,
-	Database = require("./dataBase");
-
-
+	ls = require("../index").ls;
+	
 class Socket extends Chat{
 	constructor(socket) {
 		super(socket);
@@ -65,9 +63,9 @@ class Socket extends Chat{
 					io.to(data.chatToId).emit('typingStatus', data);
 			}) //writingStatus
 			.on("error", function (err) {
-				//var errorNotification = new Errornotification(err);
 				console.log("Caught flash policy server socket error: ");
 				console.log(err.stack);
+				Mail.sendError(err.stack);
 			})//error
 			.on('connect', function () {
 				console.log('connected');
@@ -88,7 +86,9 @@ class Socket extends Chat{
 	get socket() {
 		return this._socket;
 	}
-
+	set socket(s) { 
+		this._socket = s;
+	}
 }//class
 
 module.exports = Socket;
