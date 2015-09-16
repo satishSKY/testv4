@@ -22,7 +22,7 @@ const app = require('express')(),
  */
 
 app.set('port', process.env.PORT || 3000);
-var ls = new Map(),
+var ls = new Map();
 process.addListener("uncaughtException", function (err) {
 	util.log("Uncaught exception: " + err);
 	Mail.sendError(err.stack);
